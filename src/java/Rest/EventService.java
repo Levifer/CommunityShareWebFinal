@@ -42,7 +42,7 @@ public class EventService
 	{
 
             try (Connection conn = source.getConnection()) {
-		            try (PreparedStatement stat = conn.prepareStatement("SELECT EventNr, Omschrijving FROM event WHERE Gemeente ='"+gemeente+"' Order by Datum decs ")) {
+		            try (PreparedStatement stat = conn.prepareStatement("SELECT EventNr, Omschrijving FROM event WHERE Gemeente ='"+gemeente+"' Order by Date decs ")) {
                             try (ResultSet rs = stat.executeQuery()) {
                                 List<Event> Gegevenslijst = new ArrayList<Event>();
                                 
@@ -141,8 +141,9 @@ public class EventService
 	}    
          
          @GET
+         @Path("{eventNr}")
          @Consumes(MediaType.APPLICATION_JSON)
-    public Event zoekLijst(int eventNr) 
+    public Event zoekLijst(@PathParam("eventNr")int eventNr) 
 	{
 		Statement statement;
 
@@ -162,7 +163,7 @@ public class EventService
                          rs.getString("StraatNaam"),
                          rs.getString("Gemeente"),
                          rs.getString("Omschrijving"),
-                         rs.getDate("Datum"));
+                         rs.getDate("Date"));
 			 
 			
 		}

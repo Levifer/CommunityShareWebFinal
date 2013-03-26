@@ -37,44 +37,12 @@ public class PersoonService {
     private Persoon Pers;
     
     
-    @Path("{account}")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-	public Persoon logIn(@PathParam("account")String facebookAccount, @PathParam("account")String twitterAccount)
-	{
-	try(Connection c = source.getConnection())
-             {
-		
-		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("SELECT * FROM persoon WHERE FacebookAccount ='"+facebookAccount+"' OR TwitterAccount='"+twitterAccount+"'");
-		rs.next();
-		//FacebookAccount=rs.getString("FacebookAccount");
-                
-			
-		if(rs.getString("FacebookAccount").equals(facebookAccount))
-		{
-                    twitterAccount = null;
-                    Pers = new Persoon(rs.getInt("PersoonNr"), rs.getInt("Score"), rs.getString("FacebookAccount"),twitterAccount);
-	
-		}
-                else if(rs.getString("TwitterAccount").equals(twitterAccount))
-                {
-                     facebookAccount = null;
-                    Pers = new Persoon(rs.getInt("PersoonNr"), rs.getInt("Score"), facebookAccount,rs.getString("TwitterAccount"));
-                }
-	   }
-	    catch (SQLException ex) {
-            throw new WebApplicationException(ex);
-        }
-		return Pers;
-
-	}
-	
+    
 	
 	
 
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
+@GET
+@Produces(MediaType.APPLICATION_JSON)
 	public List<Persoon> geefScores() 
 	{
 		List<Persoon> PersoonLijst = new ArrayList<Persoon>();
@@ -114,10 +82,9 @@ public class PersoonService {
 		return PersoonLijst;
 	}
 	
-	
 
-	         @POST
-                 @Consumes(MediaType.APPLICATION_JSON)
+@POST
+@Consumes(MediaType.APPLICATION_JSON)
 		public void voegEenPersoonToe(Persoon Pers) {
 			
 			
@@ -149,6 +116,38 @@ public class PersoonService {
 			
 	
 	
+	@Path("{account}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+	public Persoon logIn(@PathParam("account")String facebookAccount, @PathParam("account")String twitterAccount)
+	{
+	try(Connection c = source.getConnection())
+             {
+		
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("SELECT * FROM persoon WHERE FacebookAccount ='"+facebookAccount+"' OR TwitterAccount='"+twitterAccount+"'");
+		rs.next();
+		//FacebookAccount=rs.getString("FacebookAccount");
+                
+			
+		if(rs.getString("FacebookAccount").equals(facebookAccount))
+		{
+                    twitterAccount = null;
+                    Pers = new Persoon(rs.getInt("PersoonNr"), rs.getInt("Score"), rs.getString("FacebookAccount"),twitterAccount);
+	
+		}
+                else if(rs.getString("TwitterAccount").equals(twitterAccount))
+                {
+                     facebookAccount = null;
+                    Pers = new Persoon(rs.getInt("PersoonNr"), rs.getInt("Score"), facebookAccount,rs.getString("TwitterAccount"));
+                }
+	   }
+	    catch (SQLException ex) {
+            throw new WebApplicationException(ex);
+        }
+		return Pers;
+
+	}
 	
 
     
