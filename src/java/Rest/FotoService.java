@@ -3,6 +3,8 @@ package Rest;
 
 import Domein.Foto;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -37,14 +39,14 @@ public class FotoService
     @Path("{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Foto geefFoto(@PathParam("id")int fotoNr) throws SQLException, IOException 
+    public Foto geefFoto(@PathParam("id")int fotoNr)   
 	{
 		
 		Statement statement;
-		Connection conn = source.getConnection();
+		
 		
 		try 
-		{
+		{Connection conn = source.getConnection();
 			statement = conn.createStatement();
 			ResultSet rs = statement.executeQuery("SELECT * FROM foto WHERE FotoNr ='"+fotoNr+"'");
 			
@@ -60,6 +62,9 @@ public class FotoService
 		catch (SQLException ex) 
 		{
 			throw new WebApplicationException(ex);
+		}catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return F;
 	}
@@ -67,24 +72,28 @@ public class FotoService
     
      @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public int  nieuweFoto(Foto F) throws SQLException 
+    public int  nieuweFoto(Foto F) 
 	{
              int primkey=0;
-		Connection conn = source.getConnection();
+		
 
 		try
-		{			
+		{Connection conn = source.getConnection();			
 			
-			Blob Foto=conn.createBlob();
-			OutputStream afbeeldingStream=Foto.setBinaryStream(1);
-			ImageIO.write(F.getFoto(),"jpg",afbeeldingStream);
+					
+                        ByteArrayOutputStream out = new ByteArrayOutputStream();  
+                        ImageIO.write(F.getFoto(),"jpeg",out);  
+                        
+                         byte[] buf = out.toByteArray();  
+                        // setup stream for blob  
+                         ByteArrayInputStream inStream = new ByteArrayInputStream(buf);
 			
 			//Statement s = connecti.getConnection().createStatement();//connectie maken
 			//ResultSet rs = s.executeQuery("SELECT FotoNr FROM Foto ORDER BY FotoNr desc");
 			//rs.next();			
 			PreparedStatement pstmt = conn.prepareStatement("INSERT INTO foto(FotoNr,Foto) VALUES(?,?)",Statement.RETURN_GENERATED_KEYS);
 			pstmt.setInt(1, F.getFotoNr());
-			pstmt.setBlob(2, Foto);
+			pstmt.setBinaryStream(2, inStream);
 			
 						
 			pstmt.executeUpdate();

@@ -36,12 +36,13 @@ public class EventService
 
 	//deze klasse is voor gegevens in de databank te steken, uit te halen, up te date en te verwijderen voor de table Inbox 
 	@GET
+        @Path("{gemeente}")
         @Produces(MediaType.APPLICATION_JSON)
-	public List<Event> geefLijstEvent(String gemeente) throws SQLException 
+	public List<Event> geefLijstEvent(@PathParam("gemeente")String gemeente) throws SQLException 
 	{
 
             try (Connection conn = source.getConnection()) {
-		            try (PreparedStatement stat = conn.prepareStatement("SELECT * FROM TBL_MESSAGE INNER JOIN TBL_USER ON TBL_MESSAGE.AUTHOR = TBL_USER.ID")) {
+		            try (PreparedStatement stat = conn.prepareStatement("SELECT EventNr, Omschrijving FROM event WHERE Gemeente ='"+gemeente+"' Order by Datum decs ")) {
                             try (ResultSet rs = stat.executeQuery()) {
                                 List<Event> Gegevenslijst = new ArrayList<Event>();
                                 
@@ -99,7 +100,7 @@ public class EventService
          
          @POST
          @Consumes(MediaType.APPLICATION_JSON)
-	public void aanmakenVanEenEvent(Event e) throws SQLException 
+	public void aanmakenVanEenEvent(Event e) 
 	{
                
 
@@ -141,7 +142,7 @@ public class EventService
          
          @GET
          @Consumes(MediaType.APPLICATION_JSON)
-    public Event zoekLijst(int eventNr) throws SQLException
+    public Event zoekLijst(int eventNr) 
 	{
 		Statement statement;
 

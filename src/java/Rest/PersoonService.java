@@ -73,8 +73,8 @@ public class PersoonService {
 	
 	
 
-	
-	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
 	public List<Persoon> geefScores() 
 	{
 		List<Persoon> PersoonLijst = new ArrayList<Persoon>();
