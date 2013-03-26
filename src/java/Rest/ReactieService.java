@@ -103,7 +103,7 @@ public class ReactieService {
     //lijst/zoeken = meldingnr meegeven, moet lijst geven van die reactie op die melding
       @GET
       @Produces(MediaType.APPLICATION_JSON)
-    public List<Reactie> geefLijstReactiesGevaar(int gevaarNr) throws SQLException 
+    public List<Reactie> geefLijstReactiesGevaar(int gevaarNr) 
 	{
 
            try(Connection conn = source.getConnection()) {
