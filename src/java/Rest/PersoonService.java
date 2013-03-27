@@ -45,24 +45,27 @@ public class PersoonService {
 @Produces(MediaType.APPLICATION_JSON)
 	public List<Persoon> geefScores() 
 	{
-		List<Persoon> PersoonLijst = new ArrayList<Persoon>();
+		List<Persoon> PersoonLijst = new ArrayList<>();
 
 		// create Statement for querying database
-		Statement statement;
 		
-		try(Connection conn = source.getConnection()) {
-			statement = conn.createStatement();
+		
+		try(Connection conn = source.getConnection()) 
+                {
+			Statement s = conn.createStatement();
 			
 
-			// query database
-			ResultSet rs = statement.executeQuery("SELECT FacebookAccount,TwitterAccount,Score FROM persoon ORDER BY Score desc");
 			
-			while (rs.next()) {
+			ResultSet rs = s.executeQuery("SELECT FacebookAccount,TwitterAccount,Score FROM persoon ORDER BY Score ");
+			
+			while (rs.next()) 
+                        {
                                  int persoonNr = 0;
-                                 
-                                 if(rs.getString("TwitterAccount").equals(null))
+                                  String twitac;
+                                  twitac =rs.getString("TwitterAccount");
+                                 if(twitac == null)
                                  {
-                                     String twitterAccount = "geen";
+                                    String twitterAccount = "geen";
                                      Pers = new Persoon(persoonNr, rs.getInt("Score"), rs.getString("FacebookAccount"), twitterAccount);
                                  }
                                  else
@@ -75,36 +78,32 @@ public class PersoonService {
 				
 					
 			}
-			statement.close();
-		} catch (SQLException ex) {
+			return PersoonLijst;
+                        
+		} 
+                catch (SQLException ex) 
+                {
                               throw new WebApplicationException(ex);
-                        }
-		return PersoonLijst;
+                }
+		
 	}
 	
 
 @POST
 @Consumes(MediaType.APPLICATION_JSON)
 		public void voegEenPersoonToe(Persoon Pers) {
-			
-			
+
 
 			try(Connection conn = source.getConnection()){
+	
 					
 					
-					//Statement s = connecti.getConnection().createStatement();//connectie maken
-					//ResultSet rs = s.executeQuery("SELECT PersoonNr FROM Persoon ORDER BY PersoonNr desc");
-					//rs.next();
-					
-					
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Persoon VALUES(?,?,?)");
 				
-					String sql ="INSERT INTO Persoon(FacebookAccount,TwitterAccount,Score) VALUES(?,?,?)";
-					
-				PreparedStatement pstmt = conn.prepareStatement(sql);
-				//pstmt.setInt(1, Pers.getPersoonNr());	
-                                pstmt.setInt(3, Pers.getScore());
+                                
 				pstmt.setString(1, Pers.getFacebookAccount());
                                 pstmt.setString(2, Pers.getTwitterAccount());
+                                pstmt.setInt(3, Pers.getScore());
 				
 				pstmt.executeUpdate();
 			}
@@ -115,8 +114,7 @@ public class PersoonService {
 		} 
 			
 	
-	
-	@Path("{account}")
+    @Path("{account}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
 	public Persoon logIn(@PathParam("account")String facebookAccount, @PathParam("account")String twitterAccount)
@@ -127,7 +125,7 @@ public class PersoonService {
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("SELECT * FROM persoon WHERE FacebookAccount ='"+facebookAccount+"' OR TwitterAccount='"+twitterAccount+"'");
 		rs.next();
-		//FacebookAccount=rs.getString("FacebookAccount");
+		
                 
 			
 		if(rs.getString("FacebookAccount").equals(facebookAccount))

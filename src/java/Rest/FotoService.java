@@ -41,14 +41,12 @@ public class FotoService
     @Produces(MediaType.APPLICATION_JSON)
     public Foto geefFoto(@PathParam("id")int fotoNr)   
 	{
-		
-		Statement statement;
-		
-		
-		try 
-		{Connection conn = source.getConnection();
-			statement = conn.createStatement();
-			ResultSet rs = statement.executeQuery("SELECT * FROM foto WHERE FotoNr ='"+fotoNr+"'");
+
+		try(Connection conn = source.getConnection()) 
+		{
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM foto WHERE FotoNr =?");
+                        pstmt.setInt(1, fotoNr);
+			ResultSet rs = pstmt.executeQuery();
 			
                         Blob Foto=rs.getBlob("Foto");				 
                         InputStream imageBlobStream=Foto.getBinaryStream();
@@ -56,7 +54,7 @@ public class FotoService
 
 			F = new Foto(rs.getInt("FotoNr"), foto);
 			
-			statement.close();
+			
 		} 
 		
 		catch (SQLException ex) 
@@ -77,29 +75,25 @@ public class FotoService
              int primkey=0;
 		
 
-		try
-		{Connection conn = source.getConnection();			
-			
-					
+		try(Connection conn = source.getConnection())
+		{			
+		
                         ByteArrayOutputStream out = new ByteArrayOutputStream();  
                         ImageIO.write(F.getFoto(),"jpeg",out);  
-                        
                          byte[] buf = out.toByteArray();  
-                        // setup stream for blob  
                          ByteArrayInputStream inStream = new ByteArrayInputStream(buf);
 			
-			//Statement s = connecti.getConnection().createStatement();//connectie maken
-			//ResultSet rs = s.executeQuery("SELECT FotoNr FROM Foto ORDER BY FotoNr desc");
-			//rs.next();			
-			PreparedStatement pstmt = conn.prepareStatement("INSERT INTO foto(FotoNr,Foto) VALUES(?,?)",Statement.RETURN_GENERATED_KEYS);
+						
+			PreparedStatement pstmt = conn.prepareStatement("INSERT INTO foto VALUES(?,?)",Statement.RETURN_GENERATED_KEYS);
 			pstmt.setInt(1, F.getFotoNr());
 			pstmt.setBinaryStream(2, inStream);
 			
 						
 			pstmt.executeUpdate();
                         ResultSet rs = pstmt.getGeneratedKeys();
-                        if (rs != null && rs.next()) {
-                        primkey = rs.getInt(1);
+                        if (rs != null && rs.next()) 
+                        {
+                            primkey = rs.getInt(1);
                         }
 
 		}
