@@ -88,8 +88,8 @@ public class GevaarVeldService
                            
   }
   @GET
- @Path("{gevaarNr}")
- @Consumes(MediaType.APPLICATION_JSON)
+ @Path("gevaarveld/{gevaarNr}")
+ @Produces(MediaType.APPLICATION_JSON)
     public GevaarVeld zoekLijst(@PathParam("gevaarNr")int gevaarVeld) 
 	{
 		

@@ -12,17 +12,28 @@ import java.sql.Date;
  */
 public class Reactie 
 {
-    private int eventNr,gevaarNr,persoonNr;
+    private int eventNr,gevaarNr,persoonNr,reactieNr;
     private String reactie;
     private Date datum;
 
-    public Reactie(int eventNr, int gevaarNr, int persoonNr, String reactie, Date datum) {
+    public Reactie(int eventNr, int gevaarNr, int persoonNr, int reactieNr, String reactie, Date datum) {
         this.eventNr = eventNr;
         this.gevaarNr = gevaarNr;
         this.persoonNr = persoonNr;
+        this.reactieNr = reactieNr;
         this.reactie = reactie;
         this.datum = datum;
     }
+
+    public int getReactieNr() {
+        return reactieNr;
+    }
+
+    public void setReactieNr(int reactieNr) {
+        this.reactieNr = reactieNr;
+    }
+
+
 
     public int getEventNr() {
         return eventNr;

@@ -47,7 +47,7 @@ public class PersoonService {
 	{
 		List<Persoon> PersoonLijst = new ArrayList<>();
 
-		// create Statement for querying database
+		
 		
 		
 		try(Connection conn = source.getConnection()) 
@@ -114,29 +114,57 @@ public class PersoonService {
 		} 
 			
 	
-    @Path("{account}")
+    @Path("{accountFacebook}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-	public Persoon logIn(@PathParam("account")String facebookAccount, @PathParam("account")String twitterAccount)
+	public Persoon logInFacebook(@PathParam("accountFacebook")String facebookAccount)
 	{
 	try(Connection c = source.getConnection())
              {
-		
+		//
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("SELECT * FROM persoon WHERE FacebookAccount ='"+facebookAccount+"' OR TwitterAccount='"+twitterAccount+"'");
+		ResultSet rs = s.executeQuery("SELECT * FROM persoon WHERE FacebookAccount ='"+facebookAccount+"'");
 		rs.next();
 		
                 
 			
 		if(rs.getString("FacebookAccount").equals(facebookAccount))
 		{
-                    twitterAccount = null;
+                   String twitterAccount = null;
                     Pers = new Persoon(rs.getInt("PersoonNr"), rs.getInt("Score"), rs.getString("FacebookAccount"),twitterAccount);
 	
 		}
-                else if(rs.getString("TwitterAccount").equals(twitterAccount))
+                
+                    
+              
+	   }
+	    catch (SQLException ex) {
+            throw new WebApplicationException(ex);
+        }
+		return Pers;
+
+	}
+    
+    @Path("persoon/{accountTwitter}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+   
+	public Persoon logInTwitter( @PathParam("accountTwitter")String twitterAccount)
+	{
+	try(Connection c = source.getConnection())
+             {
+		//
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("SELECT * FROM persoon WHERE  TwitterAccount='"+twitterAccount+"'");
+		rs.next();
+		
+                
+			
+		
+                    
+                if(rs.getString("TwitterAccount").equals(twitterAccount))
                 {
-                     facebookAccount = null;
+                     String facebookAccount = null;
                     Pers = new Persoon(rs.getInt("PersoonNr"), rs.getInt("Score"), facebookAccount,rs.getString("TwitterAccount"));
                 }
 	   }
@@ -147,6 +175,5 @@ public class PersoonService {
 
 	}
 	
-
     
 }

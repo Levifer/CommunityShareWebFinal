@@ -26,6 +26,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -69,93 +70,100 @@ public class ReactieService {
         //reactie verwijderen
     }
     
-      @Path("{id}")
-      @DELETE
-    public void verwijderenVanEenReactie(@PathParam("id") Reactie r){
-       
-        
-        try(Connection conn = source.getConnection()){
-             Statement statement;
-            statement= conn.createStatement();
-            String sql= ("DELETE FROM reactie WHERE("
-                    + "EventNr,"
-                    + "GevaarNr,"
-                    + "PersoonNr,"
-                    + "Reactie )"
-                    + "VALUES(?,?,?,?)");
-            
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-             pstmt.setInt(1, r.getEventNr());
-             pstmt.setInt(2, r.getGevaarNr());
-             pstmt.setInt(3, r.getPersoonNr());
-             pstmt.setString(4, r.getReactie());
-             pstmt.executeUpdate();
-             pstmt.close();
-             
-            
-        }   
-       catch (SQLException ex) {
-                              throw new WebApplicationException(ex);
-                        }
-     
-     }
-    
-    //lijst/zoeken = meldingnr meegeven, moet lijst geven van die reactie op die melding
-      @GET
-      @Produces(MediaType.APPLICATION_JSON)
-    public List<Reactie> geefLijstReactiesGevaar(int gevaarNr) 
+  @Path("{ReactieNr},{PersoonNr}")
+  @DELETE
+	public void verwijderenVanEenReactie(@PathParam("ReactieNr")int ReactieNr,@PathParam("persoonNr")int persoonNr) 
 	{
 
-           try(Connection conn = source.getConnection()) {
-               List<Reactie> reactieLijstGevaar = new ArrayList<Reactie>();
-                    Statement statement;
-                     statement = conn.createStatement();
-                 ResultSet rs = statement.executeQuery("SELECT PersoonNr, Reactie FROM reactie WHERE "
-                           + "GevaarNr = '"+gevaarNr+"' "
-                           + "ORDER BY Datum");
+			try(Connection conn = source.getConnection())
+                        {
+                                PreparedStatement stat = conn.prepareStatement("SELECT * FROM reactie WHERE ReactieNr = ?");
+                                stat.setInt(1, ReactieNr);
+                                ResultSet rs = stat.executeQuery();
+                                     if (!rs.next()) 
+                                     {
+                                         throw new WebApplicationException(Response.Status.NOT_FOUND);
+                                     }
+          		
+                                try (PreparedStatement pstmt = conn.prepareStatement("DELETE FROM reactie WHERE ReactieNr= ? AND PersoonNr= ?")) 
+                                {
+                                    pstmt.setInt(1, ReactieNr);
+                                    pstmt.setInt(2, persoonNr);
+                                    pstmt.executeUpdate();
+                                }										
+                        
+			  }
+                        catch (SQLException ex) 
+                          {
+                            throw new WebApplicationException(ex);
+                          }
+      } 
+   
+    @GET
+    @Path("{gevaarNr}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Reactie> geefLijstReactiesGevaar(@PathParam("gevaarNr")int gevaarNr) 
+        {
+
+           try(Connection conn = source.getConnection()) 
+        
+           {
+               List<Reactie> reactieLijstGevaar = new ArrayList<>();
+               PreparedStatement pstmt = conn.prepareStatement("SELECT PersoonNr, Reactie, ReactieNr FROM reactie WHERE GevaarNr = ? ORDER BY Datum" );
+               pstmt.setInt(1, gevaarNr);
+               ResultSet rs = pstmt.executeQuery();
                   
+                     Date datum=null;
+                     int eventNr = 0;
                   
-                  
-                  while(rs.next()){
-                            Date datum=null;
-                            int eventNr = 0;
-                          Reactie re = new Reactie(eventNr,gevaarNr,rs.getInt("PersoonNr"), rs.getString("Reactie"),datum);
+                  while(rs.next())
+                  {
+                            
+                          Reactie re = new Reactie(eventNr,gevaarNr,rs.getInt("PersoonNr"),rs.getInt("ReactieNr"), rs.getString("Reactie"),datum);
                           reactieLijstGevaar.add(re);
                   }
+                  
                    return reactieLijstGevaar;
            }
             
-	    catch (SQLException ex) {
-            throw new WebApplicationException(ex);
-        }
+	    catch (SQLException ex) 
+            {
+                throw new WebApplicationException(ex);
+            }
           
 
-        }
-      @GET
-      @Produces(MediaType.APPLICATION_JSON)
-        public List<Reactie> geefLijstReactiesEvent(int eventNr) 
+      }
+    
+    
+    @GET
+    @Path("reactie/{eventNr}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Reactie> geefLijstReactiesEvent(@PathParam("eventNr")int eventNr) 
 	{
-           try(Connection conn = source.getConnection()) {
-                    List<Reactie> reactieLijstGevaar = new ArrayList<Reactie>();
-                  Statement statement;
-                  statement = conn.createStatement();
-                  ResultSet rs = statement.executeQuery("SELECT PersoonNr, Reactie FROM reactie WHERE "
-                           + "EventNr = '"+eventNr+"' "
-                           + "ORDER BY Datum");
+           try(Connection conn = source.getConnection()) 
+           {
+                    List<Reactie> reactieLijstGevaar = new ArrayList<>();
+                    PreparedStatement pstmt = conn.prepareStatement("SELECT PersoonNr, Reactie, ReactieNr FROM reactie WHERE eventNr = ? ORDER BY Datum" );
+                    pstmt.setInt(1, eventNr);
+                    ResultSet rs = pstmt.executeQuery();
                   
-                  
-                  
-                  while(rs.next()){
+                            
                             Date datum=null;
                             int gevaarNr = 0;
-                          Reactie re = new Reactie(eventNr,gevaarNr,rs.getInt("PersoonNr"), rs.getString("Reactie"),datum);
+                  
+                     while(rs.next())
+                     {
+                          
+                          Reactie re = new Reactie(eventNr,gevaarNr,rs.getInt("PersoonNr"),rs.getInt("ReactieNr"), rs.getString("Reactie"),datum);
                           reactieLijstGevaar.add(re);
-                  }
+                     }
+                     
                   return reactieLijstGevaar;
            }
-            catch (SQLException ex) {
-            throw new WebApplicationException(ex);
-        }
+            catch (SQLException ex) 
+            {
+                throw new WebApplicationException(ex);
+            }
  
         }
    }

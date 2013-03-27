@@ -24,12 +24,12 @@ public class ApplicationConfig extends Application {
      */
     private Set<Class<?>> getRestResourceClasses() {
         Set<Class<?>> resources = new java.util.HashSet<Class<?>>();
-        resources.add(Rest.GevaarVeldService.class);
-        resources.add(Rest.FotoService.class);
         resources.add(Rest.EventService.class);
+           resources.add(Rest.LikeService.class);
+        resources.add(Rest.GevaarVeldService.class);
         resources.add(Rest.PersoonService.class);
-        //resources.add(Rest.LikeService.class);
-       // resources.add(Rest.ReactieService.class);
+        resources.add(Rest.FotoService.class);
+        resources.add(Rest.ReactieService.class);
         try {
             Class<?> jacksonProvider = Class.forName("org.codehaus.jackson.jaxrs.JacksonJsonProvider");
             resources.add(jacksonProvider);

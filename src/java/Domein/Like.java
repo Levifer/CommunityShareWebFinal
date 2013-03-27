@@ -10,15 +10,26 @@ package Domein;
  */
 public class Like 
 {
-    private int eventNr,gevaarNr,persoonNr;
+    private int eventNr,gevaarNr,persoonNr,likeNr;
     private boolean liken;
 
-    public Like(int eventNr, int gevaarNr, int persoonNr, boolean liken) {
+    public Like(int eventNr, int gevaarNr, int persoonNr, int likeNr, boolean liken) {
         this.eventNr = eventNr;
         this.gevaarNr = gevaarNr;
         this.persoonNr = persoonNr;
+        this.likeNr = likeNr;
         this.liken = liken;
     }
+
+    public int getLikeNr() {
+        return likeNr;
+    }
+
+    public void setLikeNr(int likeNr) {
+        this.likeNr = likeNr;
+    }
+
+
 
     public int getEventNr() {
         return eventNr;

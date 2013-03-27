@@ -81,9 +81,9 @@ public class EventService
   }
   
  @GET
- @Path("{eventNr}")
- @Consumes(MediaType.APPLICATION_JSON)
-    public Event zoekLijst(@PathParam("eventNr")int eventNr) 
+ @Path("event/{eventNr2}")
+ @Produces(MediaType.APPLICATION_JSON)
+    public Event zoekLijst(@PathParam("eventNr2")int eventNr) 
 	{
 		
 
