@@ -38,57 +38,95 @@ public class ReactieService {
     
     @Resource(name = "jdbc/communityshare")
     private DataSource source;
-        
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void aanmakenVanEenReactie(Reactie r){
+  
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+	public void aanmakenVanEenReactie(Reactie r) 
+	{
+               
+                if(r.getEventNr()!=0)
+                {
+                         int x = 0;
+                     try( Connection conn = source.getConnection())
+                        {
+                        		
+			PreparedStatement pstmt = conn.prepareStatement("INSERT INTO reactie("
+                                + "EventNr,"
+                                //+ "GevaarNr,"
+                                + "ReactieNr,"
+                                + "PersoonNr,"
+                                + "Reactie,"
+                                + "Datum)"
+                                + "VALUES(?,?,?,?,?)");
+                        pstmt.setInt(1, r.getEventNr());
+			//pstmt.setInt(2, r.getGevaarNr());
+                        pstmt.setInt(2,x);
+                        pstmt.setInt(3,r.getPersoonNr());
+                        pstmt.setString(4,r.getReactie());
+                        pstmt.setDate(5,r.getDatum());
+		
+			pstmt.executeUpdate();
+			
+		}
+                        
+		catch (SQLException ex) 
+		{
+			throw new WebApplicationException(ex);
+		}
+                }
+                else
+                {
+                     int x = 0;
+                     try( Connection conn = source.getConnection())
+                        {
+                        		
+			PreparedStatement pstmt = conn.prepareStatement("INSERT INTO reactie("
+                                //+ "EventNr,"
+                                + "GevaarNr,"
+                                + "ReactieNr,"
+                                + "PersoonNr,"
+                                + "Reactie,"
+                                + "Datum)"
+                                + "VALUES(?,?,?,?,?)");
+                        //pstmt.setInt(1, r.getEventNr());
+			pstmt.setInt(1, r.getGevaarNr());
+                        pstmt.setInt(2,x);
+                        pstmt.setInt(3,r.getPersoonNr());
+                        pstmt.setString(4,r.getReactie());
+                        pstmt.setDate(5,r.getDatum());
+		
+			pstmt.executeUpdate();
+			
+		}
+                        
+		catch (SQLException ex) 
+		{
+			throw new WebApplicationException(ex);
+		}
+                    
+                }
+	}     
+           
 
-        Statement statement;
-        try(Connection conn = source.getConnection()){
-            statement = conn.createStatement();
-            String sql=("INSERT INTO reactie( "
-                    + "EventNr,"
-                    + "GevaarNr,"
-                    + "PersoonNr,"
-                    + "Reactie "
-                    + "Datum)"
-                    + "VALUES(?,?,?,?,?)");
-            
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1,r.getEventNr());
-            pstmt.setInt(2, r.getGevaarNr());
-            pstmt.setInt(3,r.getPersoonNr());
-            pstmt.setString(4,r.getReactie());
-            pstmt.setDate(5, r.getDatum());
-            
-            pstmt.executeUpdate();
-            
-        }  
-             catch (SQLException ex) {
-                              throw new WebApplicationException(ex);
-                        }
-        //reactie verwijderen
-    }
-    
-  @Path("{ReactieNr},{PersoonNr}")
+@Path("{ReactieNr},{PersoonNr}")
   @DELETE
-	public void verwijderenVanEenReactie(@PathParam("ReactieNr")int ReactieNr,@PathParam("persoonNr")int persoonNr) 
+	public void verwijderenVanEenReactie(@PathParam("ReactieNr")int reactieNr, @PathParam("PersoonNr")int persoonNr) 
 	{
 
 			try(Connection conn = source.getConnection())
                         {
                                 PreparedStatement stat = conn.prepareStatement("SELECT * FROM reactie WHERE ReactieNr = ?");
-                                stat.setInt(1, ReactieNr);
+                                stat.setInt(1, reactieNr);
                                 ResultSet rs = stat.executeQuery();
                                      if (!rs.next()) 
                                      {
                                          throw new WebApplicationException(Response.Status.NOT_FOUND);
                                      }
           		
-                                try (PreparedStatement pstmt = conn.prepareStatement("DELETE FROM reactie WHERE ReactieNr= ? AND PersoonNr= ?")) 
+                                try (PreparedStatement pstmt = conn.prepareStatement("DELETE FROM reactie WHERE ReactieNr= ? AND PersoonNr = ?")) 
                                 {
-                                    pstmt.setInt(1, ReactieNr);
-                                    pstmt.setInt(2, persoonNr);
+                                    pstmt.setInt(1, reactieNr);
+                                    pstmt.setInt(2,persoonNr);
                                     pstmt.executeUpdate();
                                 }										
                         
@@ -97,7 +135,7 @@ public class ReactieService {
                           {
                             throw new WebApplicationException(ex);
                           }
-      } 
+      }
    
     @GET
     @Path("{gevaarNr}")

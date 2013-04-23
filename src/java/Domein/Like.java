@@ -21,6 +21,9 @@ public class Like
         this.liken = liken;
     }
 
+    public Like() {
+    }
+
     public int getLikeNr() {
         return likeNr;
     }
@@ -62,7 +65,25 @@ public class Like
     public void setLiken(boolean liken) {
         this.liken = liken;
     }
-
+	    @Override
+    public boolean equals (Object obj)
+    {
+        if(obj == null)
+        {
+            return false;
+        }
+        if(getClass()!= obj.getClass())
+        {
+            return false;
+            
+        }
+        final Like other = (Like)obj;
+        if (this.likeNr != other.likeNr)
+        {
+            return false;
+        }
+        return true;
+    }
 
     
 }

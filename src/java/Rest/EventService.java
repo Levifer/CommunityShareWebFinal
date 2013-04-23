@@ -44,7 +44,7 @@ public class EventService
 
             try (Connection conn = source.getConnection())
             {
-              PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM event WHERE Gemeente = ? Order by Datum"); 
+              PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM event WHERE Gemeente = ? Order by Datum desc"); 
               pstmt.setString(1, gemeente);
                 ResultSet rs = pstmt.executeQuery(); 
                 List<Event> Gegevenslijst = new ArrayList<>();
@@ -59,15 +59,15 @@ public class EventService
                                    Date datum= null;
                                   
                                     
-				Event e = new Event(categorieEvent,
+				Event e = new Event(rs.getString("CategorieEvent"),
                                         rs.getInt("EventNr"),
                                         rs.getInt("PersoonNr"),
                                         fotoNr,
                                         teller,
-                                        straatNaam,
-                                        gemeente,
+                                        rs.getString("StraatNaam"),
+                                        rs.getString("Gemeente"),
                                         rs.getString("Omschrijving"),
-                                        datum);
+                                        rs.getDate("datum"));
                                 
 				Gegevenslijst.add(e);	
                         }
@@ -154,28 +154,30 @@ public class EventService
 	{
                
 
-                
+                int x = 0;
                         try( Connection conn = source.getConnection())
                         {
                         // String categorieEvent, int meldingNr, int persoonNr, int fotoNr, int teller, String straatNaam, String gemeente, String omschrijving, Date datum		
 			PreparedStatement pstmt = conn.prepareStatement("INSERT INTO event("
+                                + "EventNr,"
                                 + "CategorieEvent,"
                                 + "PersoonNr,"
                                 + "FotoNr,"
                                 + "Teller,"
                                 + "StraatNaam,"
                                 + "Gemeente,"
-                                + "Omschrijving)"
-                                + "Datum,"
-                                + "VALUES(?,?,?,?,?,?,?,?)");
-			pstmt.setString(1, e.getCategorie());
-                        pstmt.setInt(2,e.getPersoonNr());
-                        pstmt.setInt(3,e.getFotoNr());
-                        pstmt.setInt(4,e.getTeller());
-                        pstmt.setString(5,e.getStraatNaam());
-                        pstmt.setString(6, e.getGemeente());
-                        pstmt.setString(7, e.getOmschrijving());
-                        pstmt.setDate(8, e.getDatum());
+                                + "Omschrijving,"
+                                + "Datum)"
+                                + "VALUES(?,?,?,?,?,?,?,?,?)");
+                        pstmt.setInt(1, x);
+			pstmt.setString(2, e.getCategorie());
+                        pstmt.setInt(3,e.getPersoonNr());
+                        pstmt.setInt(4,e.getFotoNr());
+                        pstmt.setInt(5,e.getTeller());
+                        pstmt.setString(6,e.getStraatNaam());
+                        pstmt.setString(7, e.getGemeente());
+                        pstmt.setString(8, e.getOmschrijving());
+                        pstmt.setDate(9, e.getDatum());
                         
 					
 						

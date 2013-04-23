@@ -20,9 +20,8 @@ public class Persoon
         this.twitterAccount = twitterAccount;
     }
 
-
-
-
+    public Persoon() {
+    }
 
     
     public int getPersoonNr() {
@@ -57,6 +56,24 @@ public class Persoon
     public void setTwitterAccount(String twitterAccount) {
         this.twitterAccount = twitterAccount;
     }
-    
+    @Override
+    public boolean equals (Object obj)
+    {
+        if(obj == null)
+        {
+            return false;
+        }
+        if(getClass()!= obj.getClass())
+        {
+            return false;
+            
+        }
+        final Persoon other = (Persoon)obj;
+        if (this.persoonNr != other.persoonNr)
+        {
+            return false;
+        }
+        return true;
+    }
     
 }

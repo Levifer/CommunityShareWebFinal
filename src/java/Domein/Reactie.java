@@ -25,6 +25,9 @@ public class Reactie
         this.datum = datum;
     }
 
+    public Reactie() {
+    }
+
     public int getReactieNr() {
         return reactieNr;
     }

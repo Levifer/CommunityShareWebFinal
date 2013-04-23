@@ -25,6 +25,9 @@ public class GevaarVeld extends Melding {
         this.categorieGevaar = categorieGevaar;
     }
 
+    public GevaarVeld() {
+    }
+
     public int getGevaarNr() {
         return gevaarNr;
     }

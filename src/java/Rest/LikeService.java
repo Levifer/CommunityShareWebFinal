@@ -39,23 +39,27 @@ public class LikeService {
     @Consumes(MediaType.APPLICATION_JSON)
     public void aanmakenVanEenLike(Like l) 
     {
-       
-        Statement statement;
-        try( Connection conn = source.getConnection())
+        
+        if(l.getEventNr()!=0)
         {
-            statement = conn.createStatement();
-            String sql=("INSERT INTO liken( "
-                    + "EventNr,"
-                    + "GevaarNr,"
-                    + "PersoonNr,"
-                    + "Liken )"
-                    + "VALUES(?,?,?,?)");
+       int x = 1;
+
+        try( Connection conn = source.getConnection())
+        {   
+          
             
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1,l.getEventNr());
-            pstmt.setInt(2, l.getGevaarNr());
-            pstmt.setInt(3,l.getPersoonNr());
-            pstmt.setBoolean(4,l.isLiken());
+            PreparedStatement pstmt = conn.prepareStatement("INSERT INTO liken( "
+                    + "LikeNr,"
+                    + "EventNr,"
+                   //+ "GevaarNr,"
+                    + "Liken,"
+                    + "PersoonNr)"
+                    + "VALUES(?,?,?,?)");
+            pstmt.setInt(1, x);
+            pstmt.setInt(2,l.getEventNr());
+            //pstmt.setInt(3, l.getGevaarNr());
+            pstmt.setBoolean(3,l.isLiken());
+            pstmt.setInt(4,l.getPersoonNr());
             
             pstmt.executeUpdate();
            
@@ -65,29 +69,61 @@ public class LikeService {
          {
             throw new WebApplicationException(ex);
          }
+        }
+        else
+        {
+                   
+       int x = 1;
+
+        try( Connection conn = source.getConnection())
+        {   
+          
+            
+            PreparedStatement pstmt = conn.prepareStatement("INSERT INTO liken( "
+                    + "LikeNr,"
+                    //+ "EventNr,"
+                    + "GevaarNr,"
+                    + "Liken,"
+                    + "PersoonNr)"
+                    + "VALUES(?,?,?,?)");
+            pstmt.setInt(1, x);
+            // pstmt.setInt(2,l.getEventNr());
+            pstmt.setInt(2, l.getGevaarNr());
+            pstmt.setBoolean(3,l.isLiken());
+            pstmt.setInt(4,l.getPersoonNr());
+            
+            pstmt.executeUpdate();
+           
+        
+         } 
+        catch (SQLException ex)
+         {
+            throw new WebApplicationException(ex);
+         }
+        }
 
           
     }
     
   @Path("{LikeNr},{PersoonNr}")
   @DELETE
-	public void verwijderenVanEenLike(@PathParam("LikeNr")int LikeNr,@PathParam("persoonNr")int persoonNr) 
+	public void verwijderenVanEenLike(@PathParam("LikeNr")int likeNr, @PathParam("PersoonNr")int persoonNr) 
 	{
 
 			try(Connection conn = source.getConnection())
                         {
-                                PreparedStatement stat = conn.prepareStatement("SELECT * FROM liken WHERE likeNr = ?");
-                                stat.setInt(1, LikeNr);
+                                PreparedStatement stat = conn.prepareStatement("SELECT * FROM liken WHERE LikeNr = ?");
+                                stat.setInt(1, likeNr);
                                 ResultSet rs = stat.executeQuery();
                                      if (!rs.next()) 
                                      {
                                          throw new WebApplicationException(Response.Status.NOT_FOUND);
                                      }
           		
-                                try (PreparedStatement pstmt = conn.prepareStatement("DELETE FROM liken WHERE LikeNr= ? AND PersoonNr= ?")) 
+                                try (PreparedStatement pstmt = conn.prepareStatement("DELETE FROM liken WHERE LikeNr= ? AND PersoonNr = ?")) 
                                 {
-                                    pstmt.setInt(1, LikeNr);
-                                    pstmt.setInt(2, persoonNr);
+                                    pstmt.setInt(1, likeNr);
+                                    pstmt.setInt(2,persoonNr);
                                     pstmt.executeUpdate();
                                 }										
                         

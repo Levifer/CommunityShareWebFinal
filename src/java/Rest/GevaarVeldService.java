@@ -67,15 +67,15 @@ public class GevaarVeldService
                                    Date datum= null;
                                   
                                     
-				GevaarVeld e = new GevaarVeld(categorieEvent,
+				GevaarVeld e = new GevaarVeld(rs.getString("CategorieGevaar"),
                                         rs.getInt("GevaarNr"),
                                         rs.getInt("PersoonNr"),
                                         fotoNr,
                                         teller,
-                                        straatNaam,
-                                        gemeente,
+                                        rs.getString("StraatNaam"),
+                                        rs.getString("Gemeente"),
                                         rs.getString("Omschrijving"),
-                                        datum);
+                                        rs.getDate("datum"));
                                 
 				Gegevenslijst.add(e);	
                         }
@@ -125,15 +125,16 @@ public class GevaarVeldService
 		} 
 		return gv;
 	}
-   @Path("{gevaarNr},{persoonNr}")
+        
+  @Path("{gevaarNr},{persoonNr}")
   @DELETE
-	public void verwijderenVanEenGevaar(@PathParam("gevaarNr")int gevaarnr,@PathParam("persoonNr")int persoonNr) 
+	public void verwijderenVanEenGevaar(@PathParam("gevaarNr")int gevaarNr,@PathParam("persoonNr")int persoonNr) 
 	{
 
 			try(Connection conn = source.getConnection())
                         {
                                 PreparedStatement stat = conn.prepareStatement("SELECT * FROM gevaarveld WHERE GevaarNr = ?");
-                                stat.setInt(1, gevaarnr);
+                                stat.setInt(1, gevaarNr);
                                 ResultSet rs = stat.executeQuery();
                                      if (!rs.next()) 
                                      {
@@ -142,7 +143,7 @@ public class GevaarVeldService
           		
                                 try (PreparedStatement pstmt = conn.prepareStatement("DELETE FROM gevaarveld WHERE GevaarNr= ? AND PersoonNr= ?")) 
                                 {
-                                    pstmt.setInt(1, gevaarnr);
+                                    pstmt.setInt(1, gevaarNr);
                                     pstmt.setInt(2, persoonNr);
                                     pstmt.executeUpdate();
                                 }										
@@ -152,18 +153,18 @@ public class GevaarVeldService
                           {
                             throw new WebApplicationException(ex);
                           }
-      } 
-		
+      } 	
 	
-          @POST
-         @Consumes(MediaType.APPLICATION_JSON)
+@POST
+@Consumes(MediaType.APPLICATION_JSON)
 	public void aanmakenVanEenGevaarVeld(GevaarVeld gv) 
 	{
-                
+                        int x= 0;
                         try(Connection conn = source.getConnection())
                         {
                         // String categorieEvent, int meldingNr, int persoonNr, int fotoNr, int teller, String straatNaam, String gemeente, String omschrijving, Date datum		
 			PreparedStatement pstmt = conn.prepareStatement("INSERT INTO gevaarveld("
+                                + "GevaarNr,"
                                 + "CategorieGevaar,"
                                 + "PersoonNr,"
                                 + "FotoNr,"
@@ -173,14 +174,15 @@ public class GevaarVeldService
                                 + "Omschrijving,"
                                 + "Datum) "
                                 + "VALUES(?,?,?,?,?,?,?,?,?)");
-			pstmt.setString(1, gv.getCategorie());
-                        pstmt.setInt(2,gv.getPersoonNr());
-                        pstmt.setInt(3,gv.getFotoNr());
-                        pstmt.setInt(4,gv.getTeller());
-                        pstmt.setString(5,gv.getStraatNaam());
-                        pstmt.setString(6, gv.getGemeente());
-                        pstmt.setString(7, gv.getOmschrijving());
-                        pstmt.setDate(8, gv.getDatum());
+                        pstmt.setInt(1, x);
+			pstmt.setString(2, gv.getCategorie());
+                        pstmt.setInt(3,gv.getPersoonNr());
+                        pstmt.setInt(4,gv.getFotoNr());
+                        pstmt.setInt(5,gv.getTeller());
+                        pstmt.setString(6,gv.getStraatNaam());
+                        pstmt.setString(7, gv.getGemeente());
+                        pstmt.setString(8, gv.getOmschrijving());
+                        pstmt.setDate(9, gv.getDatum());
                         
 					
 						

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+	<!-- Basic Page Needs
+  ================================================== -->
+    <meta charset="utf-8">
+	<title>Home - Community Share</title>
+	<meta name="author" content="Joris D'hoe, Benjamin Pieteraerents, Glenn Derycke, Arne Lammens">
+
+	<!-- Mobile Specific Metas
+  ================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+       
+
+	<!-- CSS
+  ================================================== -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="stylesheets/base.css">
+	<link rel="stylesheet" href="stylesheets/skeleton.css">
+	<link rel="stylesheet" href="stylesheets/style.css">
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="images/favicon.ico">
+	<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+        
+        <!-- Javascript
+        =================================================== -->
+         <script src="js/event.js"></script> 
+         
+</head>
+
+<body>
+	<div class="container">
+		<img class="offset-by-five six columns margin-top25 hide" src="images/logo.png">
+		<h2 class="one column margin-top25 hidebig logocss">
+			Community Share
+		</h2>
+		
+		<div class="sixteen columns hide">
+			<div id="nav">
+				<ul>
+					<li class="first"><a href="home.html">Home</a></li>
+					<li class=""><a href="menu.html">Melden</a></li>
+					<li class=""><a href="kaartradius.html">Kaart</a></li>
+					<li class="last"><a href="instellingen.html">Instellingen</a></li>
+				</ul>
+			</div>
+		</div> 
+		
+		<h4 class="sixteen columns margin-top25">Instellingen</h4>
+		<hr />
+                <fieldset class="one-third column">
+                <label for="">Weergeven in Nieuws</label>
+                <label for="regularCheckbox">
+                <input type="checkbox" id="regularCheckbox" value="checkbox 1" />
+                <span>Situaties</span>
+                </label>
+ 
+                <label for="secondRegularCheckbox">
+                <input type="checkbox" id="secondRegularCheckbox" value="checkbox 2" />
+                <span>Evenementen</span>
+                </label>
+                </fieldset>
+                
+		 <!--<fieldset class="one-third column">
+			<label for="">Weergeven in Nieuws</label>
+			<label for="regularRadio">
+				<input type="radio" name="radios" id="regularRadio" value="radio 1" />
+				<span>Situaties</span>
+			</label>
+			<label for="secondRegularRadio">
+				<input type="radio" name="radios" id="secondRegularRadio" value="radio 2" />
+				<span>Evenementen</span>
+			</label>
+		</fieldset> -->
+		
+		<fieldset class="one-third column">
+			<label for="">Radius van de kaart (km)</label>
+			<input type="range" min="5" max="20" value="5" step="5" onchange="showValue(this.value)" />
+			<span id="range">5</span>
+			<script type="text/javascript">
+				function showValue(newValue)
+				{
+					document.getElementById("range").innerHTML=newValue;
+				}
+			</script>
+		</fieldset>
+		
+		<div class="one-third column">
+			<a class="full-width button margin-top25" href="home.html">
+				Opslaan
+			</a>
+		</div>
+	</div>
+</body>
+</html>

@@ -3,11 +3,6 @@ package Domein;
 
 import java.sql.Date;
 
-
-
-
-
-
 public class Event extends Melding
 {
     
@@ -20,6 +15,10 @@ public class Event extends Melding
         this.categorieEvent = categorieEvent;
     }
 
+    public Event() {
+    }
+
+
     public int getEventNr() {
         return eventNr;
     }
@@ -27,10 +26,6 @@ public class Event extends Melding
     public void setEventNr(int eventNr) {
         this.eventNr = eventNr;
     }
-
-
-
- 
 
     
     public String getCategorie() 
@@ -44,5 +39,23 @@ public class Event extends Melding
         this.categorieEvent = categorie;
     }
         
-	
+	    @Override
+    public boolean equals (Object obj)
+    {
+        if(obj == null)
+        {
+            return false;
+        }
+        if(getClass()!= obj.getClass())
+        {
+            return false;
+            
+        }
+        final Event other = (Event)obj;
+        if (this.eventNr != other.eventNr)
+        {
+            return false;
+        }
+        return true;
+    }
 }

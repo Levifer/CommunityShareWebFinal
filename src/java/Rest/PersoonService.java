@@ -91,20 +91,20 @@ public class PersoonService {
 
 @POST
 @Consumes(MediaType.APPLICATION_JSON)
-		public void voegEenPersoonToe(Persoon Pers) {
+    public void voegEenPersoonToe(Persoon Pers) 
+                {
 
 
 			try(Connection conn = source.getConnection()){
 	
+					int x=0;
 					
-					
-				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Persoon VALUES(?,?,?)");
-				
-                                
-				pstmt.setString(1, Pers.getFacebookAccount());
-                                pstmt.setString(2, Pers.getTwitterAccount());
-                                pstmt.setInt(3, Pers.getScore());
-				
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO persoon VALUES(?,?,?,?)");
+				pstmt.setInt(1, x);
+                                pstmt.setInt(2, Pers.getScore());
+				pstmt.setString(3, Pers.getFacebookAccount());
+                                pstmt.setString(4, Pers.getTwitterAccount());
+
 				pstmt.executeUpdate();
 			}
 

@@ -26,6 +26,9 @@ public class Melding
         this.datum = datum;
     }
 
+    public Melding() {
+    }
+
 
     public int getPersoonNr() {
         return persoonNr;
