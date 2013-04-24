@@ -9,15 +9,18 @@ window.onload =function()
 
 function toevoegenevent()
  {
-     event.persoonNr=jQuery.trim($("#persoonNr").val());
-     event.fotoNr=
-     event.teller=
-     event.straatNaam=
-     event.gemeente=
-     event.omschrijving=
-     event.datum=
-     event.eventnr=0;
-     event.categorie="Evenement";
+    
+     alert("test4");
+     
+     event.categorieEvent="Evenement";
+     event.eventNr=9;
+     event.persoonNr=10;//jQuery.trim($("#persoonNr2").val());
+     event.fotoNr=12;//jQuery.trim($("#fotoNr").val());
+     event.teller=0;
+     event.straatNaam="zoutstraat";//jQuery.trim($("#straatNaam").val());
+     event.gemeente="Aalst";//jQuery.trim($("#gemeente").val());
+     event.omschrijving="omschrijving";//jQuery.trim($("#omschrijving").val());
+     event.datum=jQuery.trim($("#datum").val());
 
 
     var request = new XMLHttpRequest();
@@ -25,19 +28,21 @@ function toevoegenevent()
 
     request.onload = function() {
         if (request.status === 201) {
-            
-        } ; 
+            alert("is toegevoegd");
+        } 
     };
-    request.setRequestHeader("Content-Type","application/json");
+    request.setRequestHeader("Content-Type","APPLICATION/JSON");
     request.send(JSON.stringify(event));
 };
 function button()
 {
     
 
-$("#knopke").click(function()
+$("#eventtoevoegen").click(function()
 {
-    toeveogenevent();
+      alert("knop werkt");
+    toevoegenevent();
+  
     
     
 });

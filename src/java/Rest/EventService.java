@@ -52,11 +52,10 @@ public class EventService
                     
                                 while (rs.next()) 
 			{
-                                   String categorieEvent=null;
+                                   
                                    int fotoNr=0;
                                    int teller=0;
-                                   String straatNaam = null;
-                                   Date datum= null;
+
                                   
                                     
 				Event e = new Event(rs.getString("CategorieEvent"),
@@ -157,7 +156,7 @@ public class EventService
                 int x = 0;
                         try( Connection conn = source.getConnection())
                         {
-                        // String categorieEvent, int meldingNr, int persoonNr, int fotoNr, int teller, String straatNaam, String gemeente, String omschrijving, Date datum		
+                        		
 			PreparedStatement pstmt = conn.prepareStatement("INSERT INTO event("
                                 + "EventNr,"
                                 + "CategorieEvent,"

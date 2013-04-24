@@ -42,7 +42,7 @@ public class LikeService {
         
         if(l.getEventNr()!=0)
         {
-       int x = 1;
+       int x = 0;
 
         try( Connection conn = source.getConnection())
         {   
@@ -73,7 +73,7 @@ public class LikeService {
         else
         {
                    
-       int x = 1;
+       int x = 0;
 
         try( Connection conn = source.getConnection())
         {   

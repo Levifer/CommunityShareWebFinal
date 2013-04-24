@@ -44,6 +44,7 @@ window.onload = function(){
  function displayke(responseText)
  //function displayke(persoons)
  {
+    
      var eventDiv = document.getElementById("eerstpositie");
      var eventDiv2 = document.getElementById("tweedepositie");
      var eventDiv3 = document.getElementById("derdepositie");

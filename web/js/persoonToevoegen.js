@@ -1,43 +1,44 @@
- var url = "http://localhost:8080/communityshareweb/resources"; // Send the new group to the back-end.
-var group = {};
+var url = "http://localhost:8080/communityshareweb/resources";
+var persoon = {};
 
 window.onload =function()
 {
     button();
- 
 };
 
 function toevoegenpersoon()
  {
      
           
-        group.persoonNr =jQuery.trim($("#persoonNr").val());
-        group.score =jQuery.trim($("#score").val());
-        group.facebookAccount=jQuery.trim($("#facebook").val());
-        group.twitterAccount =jQuery.trim($("#twitter").val());
+        persoon.persoonNr =jQuery.trim($("#persoonNr").val());
+        persoon.score =jQuery.trim($("#score").val());
+        persoon.facebookAccount=jQuery.trim($("#facebook").val());
+        persoon.twitterAccount =jQuery.trim($("#twitter").val());
 
-
+   
   
-
+        
     var request = new XMLHttpRequest();
     request.open("POST", url + "/persoon");
 
-    request.onload = function() {
-        if (request.status === 201) {
-            
-        } ; 
+    request.onload = function()
+    {
+        if (request.status === 201) 
+        {
+           
+        }  
     };
-    request.setRequestHeader("Content-Type","application/json");
-    request.send(JSON.stringify(group));
-};
+        request.setRequestHeader("Content-Type","application/json");
+        request.send(JSON.stringify(persoon));
+    };
+
 function button()
 {
     
 
-$("#knopke").click(function()
-{
-    toevoegenpersoon();
-    
-    
-});
+        $("#persoontoevoegen").click(function()
+        {
+            toevoegenpersoon();
+          
+        });
 }
