@@ -2,16 +2,12 @@ package Domein;
 
 import java.awt.image.BufferedImage;
 
+public class Foto {
 
-
-public class Foto
-{
     private int fotoNr;
     private BufferedImage foto;
 
-
-    public Foto(int fotoNr, BufferedImage foto) 
-    {
+    public Foto(int fotoNr, BufferedImage foto) {
         this.fotoNr = fotoNr;
         this.foto = foto;
     }
@@ -31,7 +27,4 @@ public class Foto
     public void setFoto(BufferedImage foto) {
         this.foto = foto;
     }
-    
-    
-    
 }

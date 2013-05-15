@@ -5,7 +5,7 @@
 <!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
-        <title>Kaart - Community Share</title>
+        <title>Evenement toevoegen - Community Share</title>
         <meta name="author" content="Joris D'hoe, Benjamin Pieteraerents, Glenn Derycke, Arne Lammens">
 
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
@@ -14,16 +14,22 @@
         <link rel="stylesheet" href="stylesheets/base.css">
         <link rel="stylesheet" href="stylesheets/skeleton.css">
         <link rel="stylesheet" href="stylesheets/style.css">
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 
         <link rel="shortcut icon" href="images/favicon.ico">
         <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
         <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
         <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
 
-        <script type="text/javascript"
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNjii5nnfRz_cvO_WCPVt38LAEdpHbMXA&sensor=true">
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/kaartevenement.js"></script>
+        <script>
+            $(function() {
+                $("#datum1").datepicker();
+            });
         </script>
-        <script src="js/markers.js"></script> 
     </head>
 
     <body>
@@ -41,7 +47,32 @@
                     </ul>
                 </div>
             </div> 
-            <div id="map-canvas"></div>
+
+            <div id="map-canvas"/>
         </div>
+        <div class="container">
+            <div class="one-third column toevoegen">
+                <label>Adres: </label>
+                <input id="address"  type="text"/>
+            </div>
+
+            <div class="one-third column toevoegen" data-role="none">
+                <label>Datum: </label>
+                <input readonly="true" name="datum" type="text" id="datum1" class="datepicker" value="" />
+            </div>
+
+            <div class="one-third column toevoegen">
+                <label>Beschrijving: </label>
+                <textarea id="regularTextarea" placeholder="Er is een feest in de straat"></textarea>
+            </div>
+
+
+
+            <button  id="eventtoevoegen" class="one-third column full-width button toevoegen" type="button">
+                Posten
+            </button>
+
+        </div>
+
     </body>
 </html>

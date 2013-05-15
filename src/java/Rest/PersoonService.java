@@ -1,10 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Rest;
 
 import Domein.Persoon;
+import java.net.URI;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,157 +20,93 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-/**
- *
- * @author arne
- */
+
 @Stateless
 @Path("persoon")
 public class PersoonService {
-    
-   @Resource(name = "jdbc/communityshare")
+
+    @Resource(name = "jdbc/communityshare")
     private DataSource source;
     private Persoon Pers;
-    
-    
-    
-	
-	
 
-@GET
-@Produces(MediaType.APPLICATION_JSON)
-	public List<Persoon> geefScores() 
-	{
-		List<Persoon> PersoonLijst = new ArrayList<>();
-
-		
-		
-		
-		try(Connection conn = source.getConnection()) 
-                {
-			Statement s = conn.createStatement();
-			
-
-			
-			ResultSet rs = s.executeQuery("SELECT FacebookAccount,TwitterAccount,Score FROM persoon ORDER BY Score ");
-			
-			while (rs.next()) 
-                        {
-                                 int persoonNr = 0;
-                                  String twitac;
-                                  twitac =rs.getString("TwitterAccount");
-                                 if(twitac == null)
-                                 {
-                                    String twitterAccount = "geen";
-                                     Pers = new Persoon(persoonNr, rs.getInt("Score"), rs.getString("FacebookAccount"), twitterAccount);
-                                 }
-                                 else
-                                 {
-                                     String facebookAccount = "geen";
-                                     Pers = new Persoon(persoonNr, rs.getInt("Score"), facebookAccount,rs.getString("TwitterAccount"));
-                                 }
-				PersoonLijst.add(Pers);
-				
-				
-					
-			}
-			return PersoonLijst;
-                        
-		} 
-                catch (SQLException ex) 
-                {
-                              throw new WebApplicationException(ex);
-                }
-		
-	}
-	
-
-@POST
-@Consumes(MediaType.APPLICATION_JSON)
-    public void voegEenPersoonToe(Persoon Pers) 
-                {
+    @Path("persoon/{persoon}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String geefpersoon(@PathParam("persoon") int pers) {
 
 
-			try(Connection conn = source.getConnection()){
-	
-					int x=0;
-					
-				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO persoon VALUES(?,?,?,?)");
-				pstmt.setInt(1, x);
-                                pstmt.setInt(2, Pers.getScore());
-				pstmt.setString(3, Pers.getFacebookAccount());
-                                pstmt.setString(4, Pers.getTwitterAccount());
+        try (Connection conn = source.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement("SELECT Voornaam, Naam FROM persoon WHERE PersoonNr = ?");
+            pstmt.setInt(1, pers);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
 
-				pstmt.executeUpdate();
-			}
+            String naam = rs.getString("Naam");
+            String voornaam = rs.getString("Voornaam");
+            String volnaam = naam + " " + voornaam;
 
-			catch (SQLException ex) {
-                              throw new WebApplicationException(ex);
-                        }
-		} 
-			
-	
+            return volnaam;
+
+        } catch (SQLException ex) {
+            throw new WebApplicationException(ex);
+        }
+
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void voegEenPersoonToe(Persoon Pers) {
+
+
+        try (Connection conn = source.getConnection()) {
+
+            int x = 0;
+
+            PreparedStatement pstmt = conn.prepareStatement("INSERT INTO persoon ("
+                    + "PersoonNr,"
+                    + "FacebookAccount,"
+                    + "Voornaam,"
+                    + "Naam)"
+                    + "VALUES(?,?,?,?)");
+            pstmt.setInt(1, x);
+            pstmt.setString(2, Pers.getFacebookAccount());
+            pstmt.setString(3, Pers.getVoornaam());
+            pstmt.setString(4, Pers.getNaam());
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            throw new WebApplicationException(ex);
+        }
+
+    }
+
     @Path("{accountFacebook}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-	public Persoon logInFacebook(@PathParam("accountFacebook")String facebookAccount)
-	{
-	try(Connection c = source.getConnection())
-             {
-		//
-		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("SELECT * FROM persoon WHERE FacebookAccount ='"+facebookAccount+"'");
-		rs.next();
-		
-                
-			
-		if(rs.getString("FacebookAccount").equals(facebookAccount))
-		{
-                   String twitterAccount = null;
-                    Pers = new Persoon(rs.getInt("PersoonNr"), rs.getInt("Score"), rs.getString("FacebookAccount"),twitterAccount);
-	
-		}
-                
-                    
-              
-	   }
-	    catch (SQLException ex) {
+    public int logInFacebook(@PathParam("accountFacebook") String facebookAccount) {
+        int persoonnr = 0;
+        try (Connection c = source.getConnection()) {
+            //
+            PreparedStatement pstmt = c.prepareStatement("SELECT * From persoon WHERE FacebookAccount = ?");
+            pstmt.setString(1, facebookAccount);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (!rs.next()) {
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            } else {
+                persoonnr = rs.getInt("PersoonNr");
+                return persoonnr;
+            }
+
+
+
+        } catch (SQLException ex) {
             throw new WebApplicationException(ex);
         }
-		return Pers;
 
-	}
-    
-    @Path("persoon/{accountTwitter}")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-   
-	public Persoon logInTwitter( @PathParam("accountTwitter")String twitterAccount)
-	{
-	try(Connection c = source.getConnection())
-             {
-		//
-		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("SELECT * FROM persoon WHERE  TwitterAccount='"+twitterAccount+"'");
-		rs.next();
-		
-                
-			
-		
-                    
-                if(rs.getString("TwitterAccount").equals(twitterAccount))
-                {
-                     String facebookAccount = null;
-                    Pers = new Persoon(rs.getInt("PersoonNr"), rs.getInt("Score"), facebookAccount,rs.getString("TwitterAccount"));
-                }
-	   }
-	    catch (SQLException ex) {
-            throw new WebApplicationException(ex);
-        }
-		return Pers;
 
-	}
-	
-    
+    }
 }

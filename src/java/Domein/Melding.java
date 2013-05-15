@@ -1,22 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Domein;
 
 import java.sql.Date;
 
+public class Melding {
 
-
-
-public class Melding 
-{
-    private int persoonNr,fotoNr,teller;//teller zodat de melding kan bijhouden hoeveel er het gelike of gedisliked hebben
-    private String straatNaam,gemeente,omschrijving;
+    private int persoonNr, fotoNr, teller;//teller zodat de melding kan bijhouden hoeveel er het gelike of gedisliked hebben
+    private String straatNaam, gemeente, omschrijving;
     private Date datum;
 
-    public Melding( int persoonNr, int fotoNr, int teller, String straatNaam, String gemeente, String omschrijving, Date datum) {
-        
+    public Melding(int persoonNr, int fotoNr, int teller, String straatNaam, String gemeente, String omschrijving, Date datum) {
+
         this.persoonNr = persoonNr;
         this.fotoNr = fotoNr;
         this.teller = teller;
@@ -28,7 +22,6 @@ public class Melding
 
     public Melding() {
     }
-
 
     public int getPersoonNr() {
         return persoonNr;
@@ -85,10 +78,4 @@ public class Melding
     public void setDatum(Date datum) {
         this.datum = datum;
     }
-
-
-
-    
-
-    
 }

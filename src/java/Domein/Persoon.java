@@ -1,29 +1,22 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Domein;
 
-/**
- *
- * @author arne
- */
-public class Persoon 
-{
-    private int persoonNr ,score ;
-    private String  facebookAccount , twitterAccount;
 
-    public Persoon(int persoonNr, int score,  String facebookAccount, String twitterAccount) {
+public class Persoon {
+
+    private int persoonNr;
+    private String facebookAccount, naam, voornaam;
+
+    public Persoon(int persoonNr, String facebookAccount, String naam, String voornaam) {
         this.persoonNr = persoonNr;
-        this.score = score;
         this.facebookAccount = facebookAccount;
-        this.twitterAccount = twitterAccount;
+        this.naam = naam;
+        this.voornaam = voornaam;
     }
 
     public Persoon() {
     }
 
-    
     public int getPersoonNr() {
         return persoonNr;
     }
@@ -31,15 +24,6 @@ public class Persoon
     public void setPersoonNr(int persoonNr) {
         this.persoonNr = persoonNr;
     }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
 
     public String getFacebookAccount() {
         return facebookAccount;
@@ -49,31 +33,35 @@ public class Persoon
         this.facebookAccount = facebookAccount;
     }
 
-    public String getTwitterAccount() {
-        return twitterAccount;
+    public String getNaam() {
+        return naam;
     }
 
-    public void setTwitterAccount(String twitterAccount) {
-        this.twitterAccount = twitterAccount;
+    public void setNaam(String naam) {
+        this.naam = naam;
     }
+
+    public String getVoornaam() {
+        return voornaam;
+    }
+
+    public void setVoornaam(String voornaam) {
+        this.voornaam = voornaam;
+    }
+
     @Override
-    public boolean equals (Object obj)
-    {
-        if(obj == null)
-        {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        if(getClass()!= obj.getClass())
-        {
+        if (getClass() != obj.getClass()) {
             return false;
-            
+
         }
-        final Persoon other = (Persoon)obj;
-        if (this.persoonNr != other.persoonNr)
-        {
+        final Persoon other = (Persoon) obj;
+        if (this.persoonNr != other.persoonNr) {
             return false;
         }
         return true;
     }
-    
 }

@@ -1,16 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Domein;
 
-/**
- *
- * @author arne
- */
-public class Like 
-{
-    private int eventNr,gevaarNr,persoonNr,likeNr;
+
+public class Like {
+
+    private int eventNr, gevaarNr, persoonNr, likeNr;
     private boolean liken;
 
     public Like(int eventNr, int gevaarNr, int persoonNr, int likeNr, boolean liken) {
@@ -31,8 +25,6 @@ public class Like
     public void setLikeNr(int likeNr) {
         this.likeNr = likeNr;
     }
-
-
 
     public int getEventNr() {
         return eventNr;
@@ -65,25 +57,20 @@ public class Like
     public void setLiken(boolean liken) {
         this.liken = liken;
     }
-	    @Override
-    public boolean equals (Object obj)
-    {
-        if(obj == null)
-        {
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        if(getClass()!= obj.getClass())
-        {
+        if (getClass() != obj.getClass()) {
             return false;
-            
+
         }
-        final Like other = (Like)obj;
-        if (this.likeNr != other.likeNr)
-        {
+        final Like other = (Like) obj;
+        if (this.likeNr != other.likeNr) {
             return false;
         }
         return true;
     }
-
-    
 }
