@@ -1,18 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Domein;
 
 import java.sql.Date;
 
-/**
- *
- * @author arne
- */
-public class Reactie 
-{
-    private int eventNr,gevaarNr,persoonNr,reactieNr;
+
+public class Reactie {
+
+    private int eventNr, gevaarNr, persoonNr, reactieNr;
     private String reactie;
     private Date datum;
 
@@ -35,8 +29,6 @@ public class Reactie
     public void setReactieNr(int reactieNr) {
         this.reactieNr = reactieNr;
     }
-
-
 
     public int getEventNr() {
         return eventNr;
@@ -77,9 +69,4 @@ public class Reactie
     public void setDatum(Date datum) {
         this.datum = datum;
     }
-
-
-    
-    
-    
 }

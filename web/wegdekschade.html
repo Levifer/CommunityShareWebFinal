@@ -5,7 +5,7 @@
 <!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
-        <title>Kaart - Community Share</title>
+        <title>WegdekSchade toevoegen - Community Share</title>
         <meta name="author" content="Joris D'hoe, Benjamin Pieteraerents, Glenn Derycke, Arne Lammens">
 
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
@@ -20,10 +20,11 @@
         <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
         <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
 
-        <script type="text/javascript"
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNjii5nnfRz_cvO_WCPVt38LAEdpHbMXA&sensor=true">
-        </script>
-        <script src="js/markers.js"></script> 
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/GevaarKaart.js"></script>
+
     </head>
 
     <body>
@@ -41,7 +42,32 @@
                     </ul>
                 </div>
             </div> 
-            <div id="map-canvas"></div>
+
+            <div id="map-canvas"/>
         </div>
+        <div class="container">
+            <div class="one-third column toevoegen">
+                <label>Adres: </label>
+                <input id="address"  type="text"/>
+            </div>
+
+
+
+            <div class="one-third column toevoegen">
+                <label>Beschrijving: </label>
+                <textarea id="regularTextarea" placeholder="Opgepast!! Er is wegdek schade gesignaleerd op deze baan."></textarea>
+            </div>
+
+
+
+            <button  id="gevaartoevoegen" class="one-third column full-width button toevoegen" type="button">
+                Posten
+            </button>
+
+        </div>
+        <div style="visibility:hidden" >
+            <input id="categorie"  type="text" value="Wegdek Schade"/>            
+        </div>
+
     </body>
 </html>

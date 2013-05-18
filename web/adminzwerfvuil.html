@@ -5,10 +5,10 @@
 <!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
-        <title>Kaart - Community Share</title>
+        <title>Admin Zwerfvuil - Community Share</title>
         <meta name="author" content="Joris D'hoe, Benjamin Pieteraerents, Glenn Derycke, Arne Lammens">
 
-        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="stylesheets/base.css">
@@ -19,29 +19,30 @@
         <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
         <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
         <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
-
-        <script type="text/javascript"
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNjii5nnfRz_cvO_WCPVt38LAEdpHbMXA&sensor=true">
-        </script>
-        <script src="js/markers.js"></script> 
+        <script src="js/adminzwerfvuil.js"></script>
+        <script src="js/jquery.js"></script>
     </head>
 
     <body>
         <div class="container">
-            <img class="offset-by-five six columns margin-top25 hide" src="images/logo.png">
+            <img class="offset-by-five six columns margin-top25" src="images/logo.png">
 
             <div class="sixteen columns hide">
                 <div id="nav">
                     <ul>
-                        <li class="first"><a href="home.html">Home</a></li>
-                        <li class=""><a href="menu.html">Melden</a></li>
-                        <li class=""><a href="kaart.html">Kaart</a></li>
-                        <li class=""><a href="mijninzendingen.html">Mijn inzendingen</a></li>
-                        <li class="last"><a href="instellingen.html">Instellingen</a></li>
+                        <li class="first"><a href="admingevaar.html">Gevaren</a></li>
+                        <li class=""><a href="adminwegdek.html">Wegdekschade</a></li>
+                        <li class=""><a href="adminzwerfvuil.html">Zwerfvuil</a></li>
+                        <li class="last"><a href="adminevenement.html">Evenementen</a></li>
                     </ul>
                 </div>
             </div> 
-            <div id="map-canvas"></div>
+
+            <h4 class="sixteen columns margin-top25">Zwerfvuil</h4>
+            <hr />
+            <div id="zwerfvuil">
+
+            </div>
         </div>
     </body>
 </html>

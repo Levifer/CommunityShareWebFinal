@@ -5,10 +5,11 @@
 <!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
-        <title>Kaart - Community Share</title>
+        <title>Admin - Community Share</title>
+        <meta name="description" content="Werk mee aan het verbeteren van je eigen buurt!">
         <meta name="author" content="Joris D'hoe, Benjamin Pieteraerents, Glenn Derycke, Arne Lammens">
 
-        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="stylesheets/base.css">
@@ -20,28 +21,26 @@
         <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
         <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
 
-        <script type="text/javascript"
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNjii5nnfRz_cvO_WCPVt38LAEdpHbMXA&sensor=true">
-        </script>
-        <script src="js/markers.js"></script> 
+        <script src="js/facebook.js"></script> 
+        <script src="js/jquery.js"></script>
+        <script src="js/admin.js"></script>
     </head>
 
-    <body>
+    <body>		
         <div class="container">
-            <img class="offset-by-five six columns margin-top25 hide" src="images/logo.png">
+            <img class="offset-by-three ten columns margin-top25" src="images/logo.png">
 
-            <div class="sixteen columns hide">
-                <div id="nav">
-                    <ul>
-                        <li class="first"><a href="home.html">Home</a></li>
-                        <li class=""><a href="menu.html">Melden</a></li>
-                        <li class=""><a href="kaart.html">Kaart</a></li>
-                        <li class=""><a href="mijninzendingen.html">Mijn inzendingen</a></li>
-                        <li class="last"><a href="instellingen.html">Instellingen</a></li>
-                    </ul>
-                </div>
-            </div> 
-            <div id="map-canvas"></div>
+            <div class="offset-by-six">
+                <form class="four columns margin-top125">
+                    Gebruikersnaam: <input type="text" name="firstname" id="gebruiker"><br>
+                    Paswoord: <input type="password" name="pwd" id="wachtwoord">
+                </form>
+            </div>
+            <div class="offset-by-five">
+                <a class="six columns full-width button margin-top25" id="login" >
+                    Aanmelden
+                </a>
+            </div>
         </div>
     </body>
 </html>

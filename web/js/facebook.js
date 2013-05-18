@@ -1,50 +1,32 @@
- window.fbAsyncInit = function() {
+var email;
+var groep = {};
+var facebookaccount;
+var naamvol;
+window.fbAsyncInit = function() {
     FB.init({
-        appId   : '562162413805431',
-        oauth   : true,
-        status  : true, // check login status
-        cookie  : true, // enable cookies to allow the server to access the session
-        xfbml   : true// parse XFBML
+        appId: '509855929050339',
+        oauth: true,
+        status: true,
+        cookie: true,
+        xfbml: true
     });
-	FB.Event.subscribe('auth.login', function () {
-          window.location = "http://webs.hogent.be/~096506gd";
-      });
-	FB.getLoginStatus(function(response) {
-  if (response.status === 'connected') {
-    // the user is logged in and has authenticated your
-    // app, and response.authResponse supplies
-    // the user's ID, a valid access token, a signed
-    // request, and the time the access token 
-    // and signed request each expire
-    var uid = response.authResponse.userID;
-    var accessToken = response.authResponse.accessToken;
-	window.location = "http://webs.hogent.be/~096506gd";
-  } else if (response.status === 'not_authorized') {
-    // the user is logged in to Facebook, 
-    // but has not authenticated your app
-  } else {
-    // the user isn't logged in to Facebook.
-  }
-});
+};
 
-  };
-
-function loginUser(){
-    FB.login(function(response) {
+function loginUser()
+{
+    FB.login(function(response)
+    {
 
         if (response.authResponse) {
             console.log('Welcome!  Fetching your information.... ');
-            //console.log(response); // dump complete info
-            access_token = response.authResponse.accessToken; //get access token
-            user_id = response.authResponse.userID; //get FB UID
 
-            FB.api('/me', function(response) {
-                user_email = response.email; //get user email
-          // you can store this data into your database             
-            });
+            access_token = response.authResponse.accessToken;
+            user_id = response.authResponse.userID;
+            login();
+
 
         } else {
-            //user hit cancel button
+
             console.log('User cancelled login or did not fully authorize.');
 
         }
@@ -52,9 +34,141 @@ function loginUser(){
         scope: 'publish_stream,email'
     });
 }
-(function() {
-    var e = document.createElement('script');
-    e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
-    e.async = true;
-    document.getElementById('fb-root').appendChild(e);
-}());
+function postToWall()
+{
+    var naam = 'melding:';
+    var soort = document.getElementById("facebookdata").innerText;
+    var beschrijving = document.getElementById("fbomschrijving").innerText;
+    var obj = {
+        method: 'feed',
+        redirect_uri: 'http://localhost:8080/communityshare/home.html',
+        link: 'http://localhost:8080/communityshare/home.html',
+        name: naam,
+        caption: soort,
+        description: beschrijving
+    };
+
+    FB.ui(obj);
+}
+function createCookie(name, value, days) {
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        var expires = "; expires=" + date.toGMTString();
+    }
+    else
+        var expires = "";
+    document.cookie = name + "=" + value + expires + "; path=/";
+}
+function login()
+{
+    FB.api('/me', function(response) {
+        facebookaccount = response.email;
+        naamvol = response.name;
+
+
+
+        var http = new XMLHttpRequest();
+        http.open("GET", url + "/persoon/" + facebookaccount);
+        http.onload = function() {
+            if (http.status === 200)
+            {
+                var persoon = JSON.parse(http.responseText);
+
+                createCookie('persoonNr', persoon, 1);
+
+                window.location = "http://localhost:8080/communityshare/tutorial.html";
+
+            }
+            else
+            {
+
+                var arry = naamvol.split(" ", 2);
+                var voornaam = arry[0];
+                var naam = arry[1];
+                var voornaam = voornaam.trim();
+                var naam = naam.trim();
+
+                groep.persoonNr = 0;
+                groep.facebookAccount = facebookaccount;
+                groep.naam = naam;
+                groep.voornaam = voornaam;
+
+                var xml = new XMLHttpRequest();
+                xml.open("POST", url + "/persoon/");
+                xml.onload = function() {
+
+                    if (xml.status === 204)
+                    {
+
+                        login();
+
+                    }
+                };
+
+                xml.setRequestHeader("Content-Type", "application/json");
+                xml.send(JSON.stringify(groep));
+
+
+            }
+        };
+
+        http.send(null);
+    });
+}
+function reedsIngelogd()
+{
+    FB.api('/me', function(response) {
+        facebookaccount = response.email;
+        naamvol = response.name;
+
+
+
+        var http = new XMLHttpRequest();
+        http.open("GET", url + "/persoon/" + facebookaccount);
+        http.onload = function() {
+            if (http.status === 200)
+            {
+                var persoon = JSON.parse(http.responseText);
+
+                createCookie('persoonNr', persoon, 1);
+
+                window.location = "http://localhost:8080/communityshare/home.html";
+
+            }
+            else
+            {
+
+                var arry = naamvol.split(" ", 2);
+                var voornaam = arry[0];
+                var naam = arry[1];
+                var voornaam = voornaam.trim();
+                var naam = naam.trim();
+
+                groep.persoonNr = 0;
+                groep.facebookAccount = facebookaccount;
+                groep.naam = naam;
+                groep.voornaam = voornaam;
+
+                var xml = new XMLHttpRequest();
+                xml.open("POST", url + "/persoon/");
+                xml.onload = function() {
+
+                    if (xml.status === 204)
+                    {
+
+                        reedsIngelogd();
+
+                    }
+                };
+
+                xml.setRequestHeader("Content-Type", "application/json");
+                xml.send(JSON.stringify(groep));
+
+
+            }
+        };
+
+        http.send(null);
+    });
+}

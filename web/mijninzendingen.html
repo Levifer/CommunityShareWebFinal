@@ -5,10 +5,10 @@
 <!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
-        <title>Kaart - Community Share</title>
+        <title>Mijn inzendingen - Community Share</title>
         <meta name="author" content="Joris D'hoe, Benjamin Pieteraerents, Glenn Derycke, Arne Lammens">
 
-        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="stylesheets/base.css">
@@ -19,16 +19,13 @@
         <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
         <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
         <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
-
-        <script type="text/javascript"
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNjii5nnfRz_cvO_WCPVt38LAEdpHbMXA&sensor=true">
-        </script>
-        <script src="js/markers.js"></script> 
+        <script src="js/mijninzendingen.js"></script>
+        <script src="js/jquery.js"></script>
     </head>
 
     <body>
         <div class="container">
-            <img class="offset-by-five six columns margin-top25 hide" src="images/logo.png">
+            <img class="offset-by-five six columns margin-top25" src="images/logo.png">
 
             <div class="sixteen columns hide">
                 <div id="nav">
@@ -41,7 +38,27 @@
                     </ul>
                 </div>
             </div> 
-            <div id="map-canvas"></div>
+
+            <h4 class="sixteen columns margin-top25">Mijn ingezonden evenementen</h4>
+            <hr />
+            <div id="evenement">
+
+            </div>
+            <h4 class="sixteen columns margin-top25">Mijn ingezonden situaties</h4>
+            <hr />
+            <div id="situatie">
+
+            </div>
+            <h4 class="sixteen columns margin-top25">Mijn ingezonden reacties</h4>
+            <hr />
+            <div id="reacties">
+
+            </div>
+            <div class="hidebig">
+                <a class="six columns full-width button margin-top25" href="home.html">
+                    Home
+                </a>
+            </div>
         </div>
     </body>
 </html>
